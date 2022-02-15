@@ -1,6 +1,18 @@
 import java.lang.reflect.*;
 import java.lang.StringBuilder;
-import java.io.*
+import java.io.*;
+import java.lang.*;
+
+public class Signature {
+	public Class<?> parentClass;
+	public String method;
+	public Class<?>[] params;
+	public Signature(String function, Class<?>... classes) {
+		String[2] components = function.split(".");
+		parentClass = Class.forName(components[0]);
+		method = components[1];
+	}
+}
 
 public class Record {
 	public static String logfile = "logfile.log";
@@ -14,9 +26,9 @@ public class Record {
 		start = System.currentTimeMillis();
 	}
 
-	private void recordCall(String function, Object... args) {
+	private void recordCall(Signature sig, Object... args) {
 		out.writeLong(System.currentTimeMillis() - start);
-		out.writeObject(function);
+		out.writeObject(sig);
 		out.writeInt(args.length);
 		for (Object o : args)
 			out.writeObject(o);
@@ -37,13 +49,14 @@ public class Replay {
 		try {
 			while (true) {
 				long nextTime = in.readLong() + start;
-				String nextFunctionName = (String)in.readObject();
+				Signature nextSig = (Signature)in.readObject();
 				int numOfArgs = in.readInt();
 				Object[numOfArgs] args;
 				for (int i = 0; i < numOfArgs; i++)
 					args[i] = in.readObject();
 				Thread.sleep(nextTime - System.currentTimeMillis());
 				// Execute method
+				// Method m = nextSig.parentClass.getMethod(sig.method, 
 			}
 		} catch (EOFError) {}
 	}
