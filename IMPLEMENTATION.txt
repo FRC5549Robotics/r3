@@ -1,0 +1,9 @@
+r3 will implement a decorator to be used on
+functions to be recorded. When the decorated
+function is called, it will append a line to
+a file titled ``recording-date.txt'' with the
+following format:
+
+	Time: ClassName.functionName(Arg1, Arg2, ...)
+
+Time should be recorded in milliseconds.
