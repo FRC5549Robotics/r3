@@ -40,16 +40,20 @@ public class Record {
 		}
 	}
 
-	public static void recordCall(Signature sig, Object... args) throws IOException, FileNotFoundException {
-		Record.getInstance()._recordCall(sig, args);
+	public static void recordCall(Signature sig, Object... args) {
+		try {
+			Record.getInstance()._recordCall(sig, args);
+		} catch (IOException e) {}
 	}
 
 	private void _stop() {
 		recording = false;
 	}
 
-	public static void stop() throws IOException, FileNotFoundException {
-		Record.getInstance()._stop();
+	public static void stop() {
+		try {
+			Record.getInstance()._stop();
+		} catch (IOException e) {}
 	}
 
 	public static Record getInstance() throws IOException, FileNotFoundException {
