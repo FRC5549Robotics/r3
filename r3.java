@@ -56,7 +56,9 @@ public class Replay {
 					args[i] = in.readObject();
 				Thread.sleep(nextTime - System.currentTimeMillis());
 				// Execute method
-				// Method m = nextSig.parentClass.getMethod(sig.method, 
+				// TODO: Check and probably fix varargs execution
+				Method m = nextSig.parentClass.getMethod(sig.method, sig.params);
+				m.invoke(nextSig.parentClass.getMethod("getInstance").invoke(null), args);
 			}
 		} catch (EOFError) {}
 	}
