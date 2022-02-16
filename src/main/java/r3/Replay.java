@@ -10,17 +10,13 @@ public class Replay {
 		try {
 			while (true) {
 				try {
-					long nextTime = in.readLong() + start;
-					Signature nextSig = (Signature)in.readObject();
-					int numOfArgs = in.readInt();
-					Object args[] = new Object[numOfArgs];
-					for (int i = 0; i < numOfArgs; i++)
-						args[i] = in.readObject();
-					Thread.sleep(nextTime - System.currentTimeMillis());
+					MethodCall mc = (MethodCall)in.readObject();
+					System.out.println("Works!");
+					Thread.sleep(mc.time - System.currentTimeMillis());
 					// Execute method
 					// TODO: Check and probably fix varargs execution
-					Method m = nextSig.parentClass.getMethod(nextSig.method, nextSig.params);
-					m.invoke(nextSig.parentClass.getMethod("getInstance").invoke(null), args);
+					Method m = mc.sig.parentClass.getMethod(mc.sig.method, mc.sig.params);
+					m.invoke(mc.sig.parentClass.getMethod("getInstance").invoke(null), mc.args);
 				} catch (ClassNotFoundException e) { System.out.println("Error: ClassNotFound"); }
 				  catch (InterruptedException e)   { System.out.println("Error: Interrupted"); }
 				  catch (NoSuchMethodException e)  { System.out.println("Error: NoSuchMethod"); }
@@ -28,5 +24,6 @@ public class Replay {
 				  catch (InvocationTargetException e) { System.out.println("Error: InvocationTarget"); }
 			}
 		} catch (EOFException e) {}
+		System.out.println("REPLAY: Done.");
 	}
 }

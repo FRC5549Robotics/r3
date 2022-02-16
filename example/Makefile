@@ -2,7 +2,10 @@ run: build
 	java Main
 
 build:
-	javac -cp r3.jar Main.java
+	javac Main.java Signature.java Record.java Replay.java
 
 resources:
 	cp ../build/libs/r3.jar .
+
+clean:
+	rm *.class -f

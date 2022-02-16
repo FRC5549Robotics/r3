@@ -27,26 +27,21 @@ public class Record {
 	private void _recordCall(Signature sig, Object... args) {
 		if (!recording) {
 			try {
-				if (corrupted) throw new IOException();
-				out.writeLong(System.currentTimeMillis() - start);
-				out.writeObject(sig);
-				out.writeInt(args.length);
-				for (Object o : args)
-					out.writeObject(o);
+				if (corrupted) return;
+				out.writeObject(new MethodCall(System.currentTimeMillis() - start, sig, args));
 			} catch (IOException e) {
-				System.out.println("Corrupted.");
+				System.out.println(System.currentTimeMillis() + " CORRUPTED: " + e.toString());
 				corrupted = true;
 			}
 		}
 	}
 
-	public static void recordCall(Signature sig, Object... args) {
-		try {
-			Record.getInstance()._recordCall(sig, args);
-		} catch (IOException e) {}
+	public static void recordCall(Signature sig, Object... args) throws IOException {
+		Record.getInstance()._recordCall(sig, args);
 	}
 
-	private void _stop() {
+	private void _stop() throws IOException {
+		out.flush();
 		recording = false;
 	}
 
