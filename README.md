@@ -1,15 +1,18 @@
 # R3
 
+**This project is in a usable alpha stage.**
+
 R3 is a general-purpose record and replay tool which is developed primarily
 for the FIRST Robots Competition (FRC). It stands for Robotic Record and Replay,
-but is not necessarily made just for Robotics.
+but is not necessarily made just for robotics.
 
 It works by logging function calls in a binary file, and then reading out of it
 at the correct times. This simple solution can ease several parts in the process
 of creating autonomous code for a robot.
 
-> This library is not production ready in any shape or form. **Do not use it unless
-> You like taking risks!**
+> This library is not production ready in any shape or form. Feel free to use it,
+> hack on it, play with it, or really anything, but, as maintainers, we cannot be
+> held responsible for breaking your code or anything of the sort.
 
 ## Usage
 
@@ -65,3 +68,10 @@ recording stored in that file. Easy as that. Example:
 ```java
 Replay.replay("test-recording.bin");
 ```
+
+## Running the example
+
+This repository comes with an example file which demonstrates how it all works. Run
+`./gradlew build` in the parent directory, then move into the
+example directory and run `make` to build and run the java file. Change the `recording`
+variable in Main.java to switch between recording and replaying.
