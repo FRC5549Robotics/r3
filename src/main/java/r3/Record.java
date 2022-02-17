@@ -5,24 +5,26 @@ import java.io.*;
 public class Record {
 	public static Record instance = null;
 	public boolean corrupted = false;
-	private FileOutputStream binout;
 	private ObjectOutputStream out;
 	private long start;
 	private boolean recording = false;
 
 	private Record() {}
 
-	private void _start(String recordingFile) throws IOException, FileNotFoundException {
-		out = new ObjectOutputStream(new FileOutputStream(recordingFile));
-		start = System.currentTimeMillis();
-		recording = true;
+	private void _start(String recordingFile) {
+		try {
+			out = new ObjectOutputStream(new FileOutputStream(recordingFile));
+			start = System.currentTimeMillis();
+			recording = true;
+		} catch (FileNotFoundException e) { System.out.println("File could not be opened"); }
+		  catch (IOException i) { System.out.println("IOException: " + i.getMessage()); }
 	}
 
-	public static void start() throws IOException, FileNotFoundException {
+	public static void start() {
 		Record.getInstance()._start("recording.bin");
 	}
 
-	public static void start(String recordingFile) throws IOException, FileNotFoundException {
+	public static void start(String recordingFile) {
 		Record.getInstance()._start(recordingFile);
 	}
 
@@ -30,6 +32,7 @@ public class Record {
 		if (recording) {
 			try {
 				if (corrupted) return;
+				if (!sig.valid) return;
 				out.writeObject(new MethodCall(System.currentTimeMillis() - start, sig, args));
 			} catch (IOException e) {
 				System.out.println(System.currentTimeMillis() + " CORRUPTED: " + e.toString());
@@ -38,25 +41,24 @@ public class Record {
 		}
 	}
 
-	public static void recordCall(Signature sig, Object... args) throws IOException {
+	public static void recordCall(Signature sig, Object... args) {
 		Record.getInstance()._recordCall(sig, args);
 	}
 
-	private void _stop() throws IOException {
-		out.flush();
+	private void _stop() {
+		try {
+			out.flush();
+		} catch (IOException e) {}
 		recording = false;
 	}
 
 	public static void stop() {
-		try {
-			Record.getInstance()._stop();
-		} catch (IOException e) {}
+		Record.getInstance()._stop();
 	}
 
-	public static Record getInstance() throws IOException, FileNotFoundException {
-		if (instance == null) {
+	public static Record getInstance() {
+		if (instance == null)
 			instance = new Record();
-		}
 		return instance;
 	}
 }
