@@ -1,8 +1,6 @@
-*.class
-example/*.java
-example/*.class
-example/*.bin
-!example/Main.java
+**.class
+**.bin
+example/*.jar
 
 # Ignore Gradle project-specific cache directory
 .gradle
