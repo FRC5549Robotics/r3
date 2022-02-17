@@ -1,5 +1,8 @@
 run: build
-	java -cp "r3.jar:." Main
+	java -cp r3.jar:`pwd` Main
+
+script: resources
+	java -cp r3.jar Main.java
 
 build: resources
 	javac -cp r3.jar Main.java
