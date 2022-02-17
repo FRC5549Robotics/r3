@@ -5,7 +5,7 @@ import java.lang.*;
 import java.io.*;
 
 public class Main {
-	static boolean recording = true;
+	static boolean recording = false;
 	int n;
 	static Main instance = null;
 
@@ -13,11 +13,12 @@ public class Main {
 		n = 0;
 	}
 
-	public static void main(String[] argv) throws IOException {
+	public static void main(String[] argv) throws IOException, InterruptedException {
 		if (recording) {
 			Record.start();
 			Main m = new Main();
 			m.printAndSetNum(5);
+			Thread.sleep(2000);
 			m.incAndPrint();
 			Record.stop();
 		} else {
