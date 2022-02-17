@@ -14,15 +14,9 @@ public class Replay {
 					long millis = start + mc.time - System.currentTimeMillis();
 					if (millis < 0) millis = 0;
 					Thread.sleep(millis);
-					// Execute method
-					// TODO: Check and probably fix varargs execution
-					Method m = mc.sig.parentClass.getMethod(mc.sig.method, mc.sig.params);
-					m.invoke(mc.sig.parentClass.getMethod("getInstance").invoke(null), mc.args);
+					mc.run();
 				} catch (ClassNotFoundException e)    { System.out.println("Error: ClassNotFound"); }
 				  catch (InterruptedException e)      { System.out.println("Error: Interrupted"); }
-				  catch (NoSuchMethodException e)     { System.out.println("Error: NoSuchMethod"); }
-				  catch (IllegalAccessException e)    { System.out.println("Error: IllegalAccess"); }
-				  catch (InvocationTargetException e) { System.out.println("Error: InvocationTarget"); }
 			}
 		} catch (EOFException e) {}
 		System.out.println("REPLAY: Done.");
