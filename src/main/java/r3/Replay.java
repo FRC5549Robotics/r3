@@ -11,7 +11,7 @@ public class Replay {
 			while (true) {
 				try {
 					MethodCall mc = (MethodCall)in.readObject();
-					Thread.sleep(mc.time - System.currentTimeMillis());
+					Thread.sleep(mc.time - System.currentTimeMillis() + start);
 					// Execute method
 					// TODO: Check and probably fix varargs execution
 					Method m = mc.sig.parentClass.getMethod(mc.sig.method, mc.sig.params);
