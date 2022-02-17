@@ -11,7 +11,6 @@ public class Replay {
 			while (true) {
 				try {
 					MethodCall mc = (MethodCall)in.readObject();
-					System.out.println("Works!");
 					Thread.sleep(mc.time - System.currentTimeMillis());
 					// Execute method
 					// TODO: Check and probably fix varargs execution

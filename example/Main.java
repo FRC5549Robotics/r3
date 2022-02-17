@@ -1,3 +1,6 @@
+import r3.Record;
+import r3.Replay;
+import r3.Signature;
 import java.lang.*;
 import java.io.*;
 

@@ -25,7 +25,7 @@ public class Record {
 	}
 
 	private void _recordCall(Signature sig, Object... args) {
-		if (!recording) {
+		if (recording) {
 			try {
 				if (corrupted) return;
 				out.writeObject(new MethodCall(System.currentTimeMillis() - start, sig, args));
