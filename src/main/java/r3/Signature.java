@@ -12,6 +12,7 @@ public class Signature implements Serializable {
 		try {
 			String components[] = function.split("\\.", 2);
 			method = components[1];
+			params = classes;
 			parentClass = Class.forName(components[0]);
 		} catch (ClassNotFoundException e) {
 			System.out.println("Classname is invalid. Call not recorded.");
