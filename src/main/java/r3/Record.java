@@ -3,7 +3,6 @@ package r3;
 import java.io.*;
 
 public class Record {
-	public static String recordingFile = "recording.bin";
 	public static Record instance = null;
 	public boolean corrupted = false;
 	private FileOutputStream binout;
@@ -11,17 +10,20 @@ public class Record {
 	private long start;
 	private boolean recording = false;
 
-	private Record() throws IOException, FileNotFoundException {
-		out = new ObjectOutputStream(new FileOutputStream(recordingFile));
-	}
+	private Record() {}
 
-	private void _start() {
+	private void _start(String recordingFile) throws IOException, FileNotFoundException {
+		out = new ObjectOutputStream(new FileOutputStream(recordingFile));
 		start = System.currentTimeMillis();
 		recording = true;
 	}
 
 	public static void start() throws IOException, FileNotFoundException {
-		Record.getInstance()._start();
+		Record.getInstance()._start("recording.bin");
+	}
+
+	public static void start(String recordingFile) throws IOException, FileNotFoundException {
+		Record.getInstance()._start(recordingFile);
 	}
 
 	private void _recordCall(Signature sig, Object... args) {
