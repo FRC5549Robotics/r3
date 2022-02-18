@@ -27,7 +27,7 @@ public class Main {
 	}
 
 	public void printAndSetNum(Integer i) {
-		Record.recordCall(new Signature("Main.printAndSetNum", Integer.class), i);
+		Record.recordCall(i);
 		if (recording) {
 			System.out.printf("%d%n", i);
 		} else {
@@ -37,7 +37,7 @@ public class Main {
 	}
 
 	public void incAndPrint() {
-		Record.recordCall(new Signature("Main.incAndPrint"));
+		Record.recordCall();
 		n++;
 		if (recording) {
 			System.out.printf("%d%n", n);

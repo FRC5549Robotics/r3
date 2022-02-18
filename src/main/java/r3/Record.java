@@ -1,6 +1,7 @@
 package r3;
 
 import java.io.*;
+import java.lang.*;
 
 public class Record {
 	public static Record instance = null;
@@ -39,6 +40,15 @@ public class Record {
 				corrupted = true;
 			}
 		}
+	}
+
+	public static void recordCall(Object... args) {
+		StackTraceElement tb = (new Throwable()).getStackTrace()[1];
+		Class<?>[] argTypes = new Class<?>[args.length];
+		int i = 0;
+		for (Object x : args)
+			argTypes[i++] = x.getClass();
+		recordCall(new Signature(tb.getClassName() + "." + tb.getMethodName(), argTypes), args);
 	}
 
 	public static void recordCall(Signature sig, Object... args) {
