@@ -3,8 +3,19 @@ package r3;
 import java.io.*;
 import java.lang.*;
 
+/**
+ * Allows users to record and control the recording of function calls.
+ *
+ * @author Pradhyum Rajasekar
+ * @since 1.0.0
+ * @see Replay
+ * @see Signature
+ */
 public class Record {
-	public static Record instance = null;
+	private static Record instance = null;
+	/**
+	 * Specifies whether the recording file is corrupted or not.
+	 */
 	public boolean corrupted = false;
 	private ObjectOutputStream out;
 	private long start;
@@ -21,10 +32,26 @@ public class Record {
 		  catch (IOException i) { System.out.println("IOException: " + i.getMessage()); }
 	}
 
+	/**
+	 * Starts recording function calls into a file titled "recording.bin".
+	 *
+	 * {@link #recordCall} has no effect when recording is not on. This function enables
+	 * that effect. It initializes the file and the start time relative to which all other
+	 * times are recorded.
+	 */
 	public static void start() {
 		Record.getInstance()._start("recording.bin");
 	}
 
+	/**
+	 * Starts recording function calls into a file.
+	 *
+	 * {@link #recordCall} has no effect when recording is not on. This function enables
+	 * that effect. It initializes the file and the start time relative to which all other
+	 * times are recorded.
+	 *
+	 * @param recordingFile the file into which data should be written
+	 */
 	public static void start(String recordingFile) {
 		Record.getInstance()._start(recordingFile);
 	}
@@ -42,6 +69,16 @@ public class Record {
 		}
 	}
 
+	/**
+	 * Records a function call.
+	 *
+	 * If recording is enabled using {@link #start}, this function records the calling
+	 * function's name and its arguments, which is then persisted into a file.
+	 *
+	 * Make sure the arguments are serializable, otherwise the stream will be corrupted.
+	 *
+	 * @param args a list of arguments
+	 */
 	public static void recordCall(Object... args) {
 		StackTraceElement tb = (new Throwable()).getStackTrace()[1];
 		Class<?>[] argTypes = new Class<?>[args.length];
@@ -51,6 +88,18 @@ public class Record {
 		recordCall(new Signature(tb.getClassName() + "." + tb.getMethodName(), argTypes), args);
 	}
 
+	/**
+	 * Records a function call.
+	 *
+	 * If recording is enabled using {@link #start}, this function records a
+	 * function's name and its arguments, which is then persisted into a file.
+	 *
+	 * Make sure the arguments are serializable, otherwise the recording file will
+	 * be corrupted.
+	 *
+	 * @param sig a {@link Signature} object representing the function
+	 * @param args a list of arguments
+	 */
 	public static void recordCall(Signature sig, Object... args) {
 		Record.getInstance()._recordCall(sig, args);
 	}
@@ -62,11 +111,17 @@ public class Record {
 		recording = false;
 	}
 
+	/**
+	 * Stops recording.
+	 *
+	 * This function flushes the file stream and disables the {@link #recordCall} method
+	 * from doing anything.
+	 */
 	public static void stop() {
 		Record.getInstance()._stop();
 	}
 
-	public static Record getInstance() {
+	private static Record getInstance() {
 		if (instance == null)
 			instance = new Record();
 		return instance;
