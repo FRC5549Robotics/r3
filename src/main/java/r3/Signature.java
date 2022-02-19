@@ -16,10 +16,14 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 public class Signature implements Serializable {
+	/** @serial the class of this method. */
+	private Class<?> parentClass;
 	/** @serial the name of this method. */
 	private String method;
 	/** @serial the object on which the method should be run. Can be null. */
 	private Object instance;
+	/** @serial whether or not to use getInstance to obtain an instance of this class. */
+	private boolean useGetInstance;
 	/** @serial the types of the parameters this method takes. */
 	private Class<?>[] params;
 	/** Whether or not the classname was valid. */
@@ -42,10 +46,32 @@ public class Signature implements Serializable {
 	 * @param classes a list of {@link Class} objects representing the parameter types of the method
 	 */
 	public Signature(Object obj, String function, Class<?>... classes) {
-		instance = obj;
+		if (!Serializable.class.isAssignableFrom(obj.getClass())) {
+			instance = null;
+			useGetInstance = true;
+		} else
+			instance = obj;
 		params = classes;
 		method = function;
+		parentClass = obj.getClass();
 	}
+
+	public void configureInstance() {
+		try {
+			if (instance == null && useGetInstance)
+				instance = parentClass.getMethod("getInstance").invoke(null);
+		} catch (NoSuchMethodException e) {
+			System.out.println("getInstance was not defined.");
+			valid = false;
+		} catch (IllegalAccessException e) {
+			System.out.println("getInstance is private or protected.");
+			valid = false;
+		} catch (InvocationTargetException e) {
+			System.out.println("getInstance raised an error.");
+			valid = false;
+		}
+	}
+
 	/**
 	 * Run the method contained in a Signature object with the specified arguments.
 	 * <p>
@@ -58,6 +84,8 @@ public class Signature implements Serializable {
 	 */
 	public void invoke(Object... args) {
 		try {
+			configureInstance();
+			if (!valid) throw new UnsupportedOperationException();
 			instance.getClass().getMethod(method, params).invoke(instance, args);
 		} catch (IllegalAccessException e) {
 			System.out.println("Method is private or protected. Could not run method.");
@@ -67,7 +95,8 @@ public class Signature implements Serializable {
 		} catch (NoSuchMethodException e) {
 			System.out.println("Methodname is invalid. Could not run method.");
 			valid = false;
+		} catch (UnsupportedOperationException e) {
+			System.out.println("Method was not valid for a past reason.");
 		}
-
 	}
 }
