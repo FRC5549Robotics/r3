@@ -16,15 +16,13 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 public class Signature implements Serializable {
-	/** @serial the class of this method. */
-	private Class<?> parentClass;
 	/** @serial the name of this method. */
 	private String method;
+	/** @serial the object on which the method should be run. Can be null. */
+	private Object instance;
 	/** @serial the types of the parameters this method takes. */
 	private Class<?>[] params;
-	/**
-	 * Whether or not the classname was valid.
-	 */
+	/** Whether or not the classname was valid. */
 	public boolean valid = true;
 	/**
 	 * Create a Signature object from a {@link String} and a list of parameter types.
@@ -39,19 +37,14 @@ public class Signature implements Serializable {
 	 * Note that fully qualified names (e.g. java.io.Serializable.writeObject) are not supported;
 	 * only a classname and a method name are supported as of version 1.1.0.
 	 *
+	 * @param obj the instance on which the method is to be run. Can be null to get using getInstance.
 	 * @param function a string representing the (semi) qualified name of a method
 	 * @param classes a list of {@link Class} objects representing the parameter types of the method
 	 */
-	public Signature(String function, Class<?>... classes) {
-		try {
-			String components[] = function.split("\\.", 2);
-			parentClass = Class.forName(components[0]);
-			params = classes;
-			method = components[1];
-		} catch (ClassNotFoundException e) {
-			System.out.println("Classname is invalid. Call not recorded.");
-			valid = false;
-		}
+	public Signature(Object obj, String function, Class<?>... classes) {
+		instance = obj;
+		params = classes;
+		method = function;
 	}
 	/**
 	 * Run the method contained in a Signature object with the specified arguments.
@@ -65,14 +58,14 @@ public class Signature implements Serializable {
 	 */
 	public void invoke(Object... args) {
 		try {
-			parentClass.getMethod(method, params).invoke(parentClass.getMethod("getInstance").invoke(null), args);
+			instance.getClass().getMethod(method, params).invoke(instance, args);
 		} catch (IllegalAccessException e) {
 			System.out.println("Method is private or protected. Could not run method.");
 			valid = false;
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
-			System.out.println("Methodname is invalid or getInstance is not defined. Could not run method.");
+			System.out.println("Methodname is invalid. Could not run method.");
 			valid = false;
 		}
 

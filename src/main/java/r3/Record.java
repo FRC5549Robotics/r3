@@ -79,13 +79,12 @@ public class Record {
 	 *
 	 * @param args a list of arguments
 	 */
-	public static void recordCall(Object... args) {
-		StackTraceElement tb = (new Throwable()).getStackTrace()[1];
+	public static void recordCall(Object instance, Object... args) {
 		Class<?>[] argTypes = new Class<?>[args.length];
 		int i = 0;
 		for (Object x : args)
 			argTypes[i++] = x.getClass();
-		recordCall(new Signature(tb.getClassName() + "." + tb.getMethodName(), argTypes), args);
+		recordCall(new Signature(instance, new Throwable().getStackTrace()[1].getMethodName(), argTypes), args);
 	}
 
 	/**

@@ -4,7 +4,7 @@ import r3.Signature;
 import java.lang.*;
 import java.io.*;
 
-public class Main {
+public class Main implements java.io.Serializable {
 	int n;
 	static Main instance = null;
 
@@ -13,7 +13,7 @@ public class Main {
 	}
 
 	public static void main(String[] argv) throws IOException, InterruptedException {
-		if (true) {
+		if (false) {
 			Record.start();   // Following lines are recorded:
 				Main m = new Main();
 				m.printAndSetNum(5);
@@ -26,7 +26,7 @@ public class Main {
 	}
 
 	public void printAndSetNum(Integer i) {
-		Record.recordCall(i);
+		Record.recordCall(this, i);
 		if (Record.isRecording()) {
 			System.out.printf("%d%n", i);
 		} else {
@@ -36,18 +36,12 @@ public class Main {
 	}
 
 	public void incAndPrint() {
-		Record.recordCall();
+		Record.recordCall(this);
 		n++;
-		if (Replay.isReplaying()) {
+		if (!Replay.isReplaying()) {
 			System.out.printf("%d%n", n);
 		} else {
 			System.out.printf("Replay: %d%n", n);
 		}
 	}
-
-	public static Main getInstance() {
-		if (instance == null)
-			instance = new Main();
-		return instance;
-	}	
 }

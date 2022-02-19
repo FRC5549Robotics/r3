@@ -13,3 +13,4 @@ resources:
 clean:
 	rm *.class -f
 	rm r3.jar -f
+	rm recording.bin -f
