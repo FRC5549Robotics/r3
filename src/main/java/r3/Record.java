@@ -34,7 +34,7 @@ public class Record {
 
 	/**
 	 * Starts recording function calls into a file titled "recording.bin".
-	 *
+	 * <p>
 	 * {@link #recordCall} has no effect when recording is not on. This function enables
 	 * that effect. It initializes the file and the start time relative to which all other
 	 * times are recorded.
@@ -45,7 +45,7 @@ public class Record {
 
 	/**
 	 * Starts recording function calls into a file.
-	 *
+	 * <p>
 	 * {@link #recordCall} has no effect when recording is not on. This function enables
 	 * that effect. It initializes the file and the start time relative to which all other
 	 * times are recorded.
@@ -71,10 +71,10 @@ public class Record {
 
 	/**
 	 * Records a function call.
-	 *
+	 * <p>
 	 * If recording is enabled using {@link #start}, this function records the calling
 	 * function's name and its arguments, which is then persisted into a file.
-	 *
+	 * <p>
 	 * Make sure the arguments are serializable, otherwise the stream will be corrupted.
 	 *
 	 * @param args a list of arguments
@@ -90,10 +90,10 @@ public class Record {
 
 	/**
 	 * Records a function call.
-	 *
+	 * <p>
 	 * If recording is enabled using {@link #start}, this function records a
 	 * function's name and its arguments, which is then persisted into a file.
-	 *
+	 * <p>
 	 * Make sure the arguments are serializable, otherwise the recording file will
 	 * be corrupted.
 	 *
@@ -125,5 +125,24 @@ public class Record {
 		if (instance == null)
 			instance = new Record();
 		return instance;
+	}
+
+	private boolean _isRecording() {
+		return recording;
+	}
+
+	/**
+	 * Returns whether function calls are recorded are not.
+	 * <p>
+	 * Recording is started by {@link #start()} and is stopped by {@link #stop}. This method
+	 * returns whether recording has started or not. This can be used to change behavior, or
+	 * even just to check whether recording has started or not.
+	 *
+	 * @return a boolean representing whether or not function calls are recorded
+	 * @since 1.1.1
+	 * @see Replay#isReplaying
+	 */
+	public static boolean isRecording() {
+		return Record.getInstance()._isRecording();
 	}
 }

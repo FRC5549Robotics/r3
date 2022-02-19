@@ -5,7 +5,6 @@ import java.lang.*;
 import java.io.*;
 
 public class Main {
-	static boolean recording = false;
 	int n;
 	static Main instance = null;
 
@@ -14,12 +13,12 @@ public class Main {
 	}
 
 	public static void main(String[] argv) throws IOException, InterruptedException {
-		if (recording) {
-			Record.start();
-			Main m = new Main();
-			m.printAndSetNum(5);
-			Thread.sleep(2000);
-			m.incAndPrint();
+		if (true) {
+			Record.start();   // Following lines are recorded:
+				Main m = new Main();
+				m.printAndSetNum(5);
+				Thread.sleep(2000);
+				m.incAndPrint();
 			Record.stop();
 		} else {
 			Replay.replay("recording.bin");
@@ -28,7 +27,7 @@ public class Main {
 
 	public void printAndSetNum(Integer i) {
 		Record.recordCall(i);
-		if (recording) {
+		if (Record.isRecording()) {
 			System.out.printf("%d%n", i);
 		} else {
 			System.out.printf("Replay: %d%n", i);
@@ -39,7 +38,7 @@ public class Main {
 	public void incAndPrint() {
 		Record.recordCall();
 		n++;
-		if (recording) {
+		if (Replay.isReplaying()) {
 			System.out.printf("%d%n", n);
 		} else {
 			System.out.printf("Replay: %d%n", n);

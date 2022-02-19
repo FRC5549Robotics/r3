@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Defines a Signature class to store a function's name and argument types; for internal use only,
  * unless you know what you're doing.
- *
+ * <p>
  * Can be passed to functions like {@link Record#recordCall(Signature, Object...)}, but it is usually
  * not needed. It is used internally, though.
  *
@@ -28,14 +28,14 @@ public class Signature implements Serializable {
 	public boolean valid = true;
 	/**
 	 * Create a Signature object from a {@link String} and a list of parameter types.
-	 *
+	 * <p>
 	 * When passing a string into this constructor, it should be of the format
 	 * <i>ClassName.methodName</i>. The parameter types should be {@link Class} objects.
-	 * 
+	 * <p>
 	 * When the classname is invalid (error checking is not performed on the
 	 * methodname; those errors occur at runtime), an error message is printed,
 	 * and {@link #valid} is set to false.
-	 *
+	 * <p>
 	 * Note that fully qualified names (e.g. java.io.Serializable.writeObject) are not supported;
 	 * only a classname and a method name are supported as of version 1.1.0.
 	 *
@@ -55,7 +55,7 @@ public class Signature implements Serializable {
 	}
 	/**
 	 * Run the method contained in a Signature object with the specified arguments.
-	 *
+	 * <p>
 	 * For ease of use, many exceptions are handled within the function. For an
 	 * {@link IllegalAccessException} or a {@link NoSuchMethodException}, {@link #valid} is set to
 	 * false and a simple error message is printed out. For an {@link InvocationTargetException},
@@ -72,7 +72,7 @@ public class Signature implements Serializable {
 		} catch (InvocationTargetException e) {
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
-			System.out.println("Methodname is invalid. Could not run method.");
+			System.out.println("Methodname is invalid or getInstance is not defined. Could not run method.");
 			valid = false;
 		}
 
