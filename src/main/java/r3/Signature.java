@@ -55,10 +55,10 @@ public class Signature implements Serializable {
 		method = function;
 		parentClass = obj.getClass();
 	}
-
-	public void configureInstance() {
+	
+	private void configureInstance() {
 		try {
-			if (instance == null && useGetInstance)
+			if (useGetInstance)
 				instance = parentClass.getMethod("getInstance").invoke(null);
 		} catch (NoSuchMethodException e) {
 			System.out.println("getInstance was not defined.");

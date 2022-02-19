@@ -76,7 +76,9 @@ public class Record {
 	 * function's name and its arguments, which is then persisted into a file.
 	 * <p>
 	 * Make sure the arguments are serializable, otherwise the stream will be corrupted.
+	 * Unserializable instances are allowed, but not recommended unless impossible.
 	 *
+	 * @param instance the instance on which the method is run
 	 * @param args a list of arguments
 	 */
 	public static void recordCall(Object instance, Object... args) {

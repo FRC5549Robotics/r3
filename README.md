@@ -75,3 +75,15 @@ This repository comes with an example file which demonstrates how it all works. 
 `./gradlew build` in the parent directory, then move into the
 example directory and run `make` to build and run the java file. Change the `recording`
 variable in Main.java to switch between recording and replaying.
+
+## Building from source
+
+Gradle is used to manage this project. To build from source, first clone, then run
+`./gradlew build`. `r3.jar` will be in `build/lib`.
+
+Documentation can be built using `./gradlew javadoc`. Documentation will be hosted in
+the foreseeable future.
+
+## Credit
+
+The creator and primary contributor to this repository is Pradhyum Rajasekar (@techieji).
