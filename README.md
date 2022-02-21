@@ -34,27 +34,23 @@ This is probably the hardest part in this library, and that's saying something. 
 that this part is likely to change in the future to make it easier; what follows is the
 current API.
 
-To do this, you need to call the `Record.recordCall` function with a `Signature` object
-and the parameters passed into the function. A `Signature` object is pretty simple to
-create: pass the name of the function and the types of its arguments. An example will
+To do this, you need to call the `Record.recordCall` function with the object itself (null
+if it a static method) and the parameters passed into the function. An example will
 illustrate this:
 
 ```java
 class MyLib {
 	String myFunc(String a, Integer b) {
-		Record.recordCall(new Signature("MyLib.myFunc", a.class, b.class), a, b)
+		Record.recordCall(this, a, b)
 		// Implementation...
 	}
 }
 ```
 
-Of course, `a.class` and `b.class` could easily be replaced with their respective class
-names.
-
-**Important Limitation:** any class which has such a function being recorded *must* define
-a static `getInstance` method which returns an instance of that class or null otherwise.
-This is used to call the function during the replay, and although I hope that this will
-be fixed in the future, it is staying for now.
+**Important Limitation:** any non-serializable class which has such a function being recorded *must* define
+a static `getInstance` method which returns an instance of that class or null otherwise. The returned
+instance will be saved in memory and will be used for any subsequent calls. However, you can implement
+the `java.io.Serializable` interface to simplify usage.
 
 ### Recording
 
@@ -63,15 +59,14 @@ will be written to `recording.bin` by default, but this can be changed by assign
 `Record.recordingFile`. Here's an example:
 
 ```java
-Record.recordingFile = "test-recording.bin";
-Record.start();
+Record.start("test-recording.bin");
 func_call();
 Record.stop();
 ```
 
 ### Replaying
 
-Replaying is just as simple as recording: call `Replay.replay` on a filename to run the
+Replaying is much simpler than recording: call `Replay.replay` on a filename to run the
 recording stored in that file. Easy as that. Example:
 
 ```java
@@ -82,17 +77,18 @@ Replay.replay("test-recording.bin");
 
 This repository comes with an example file which demonstrates how it all works. Run
 `./gradlew build` in the parent directory, then move into the
-example directory and run `make` to build and run the java file. Change the `recording`
-variable in Main.java to switch between recording and replaying.
+example directory and run `make` to build and run the java file. Change the boolean
+value in the if statement in Main.java to switch between recording and replaying.
 
 ## Building from source
 
 Gradle is used to manage this project. To build from source, first clone, then run
-`./gradlew build`. `r3.jar` will be in `build/lib`.
+`./gradlew build`. `r3-VERSION.jar` will be in `build/lib`.
 
 Documentation can be built using `./gradlew javadoc`. Documentation will be hosted in
 the foreseeable future.
 
 ## Credit
 
-The creator and primary contributor to this repository is Pradhyum Rajasekar (@techieji).
+The creator and primary contributor to this repository is Pradhyum Rajasekar
+([@techieji](https://github.com/techieji)).
