@@ -3,6 +3,7 @@ package r3;
 import java.lang.*;
 import java.lang.reflect.*;
 import java.io.Serializable;
+import java.util.*;
 
 /**
  * Defines a Signature class to store a function's name and argument types; for internal use only,
@@ -16,6 +17,7 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 public class Signature implements Serializable {
+	private static HashMap<Class<?>, Object> classToObj = new HashMap<Class<?>, Object>();
 	/** @serial the class of this method. */
 	private Class<?> parentClass;
 	/** @serial the name of this method. */
@@ -58,8 +60,13 @@ public class Signature implements Serializable {
 	
 	private void configureInstance() {
 		try {
-			if (useGetInstance)
-				instance = parentClass.getMethod("getInstance").invoke(null);
+			if (useGetInstance) {
+				// Can't use getOrDefault because of eager evaluation. Think about it further.
+				instance = classToObj.containsKey(parentClass)
+					? classToObj.get(parentClass)
+					: parentClass.getMethod("getInstance").invoke(null);
+				classToObj.putIfAbsent(parentClass, instance);
+			}
 		} catch (NoSuchMethodException e) {
 			System.out.println("getInstance was not defined.");
 			valid = false;

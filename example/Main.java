@@ -4,9 +4,8 @@ import r3.Signature;
 import java.lang.*;
 import java.io.*;
 
-public class Main implements java.io.Serializable {
+public class Main {
 	int n;
-	static Main instance = null;
 
 	public Main() {
 		n = 0;
@@ -43,5 +42,9 @@ public class Main implements java.io.Serializable {
 		} else {
 			System.out.printf("Replay: %d%n", n);
 		}
+	}
+
+	public static Main getInstance() {
+		return new Main();
 	}
 }

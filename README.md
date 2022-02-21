@@ -14,10 +14,19 @@ of creating autonomous code for a robot.
 > hack on it, play with it, or really anything, but, as maintainers, we cannot be
 > held responsible for breaking your code or anything of the sort.
 
+## Roadmap
+
+ - [x] Add support for serializing the object on which a method is called
+ - [ ] Add introspection capabilities for recordings
+ - [ ] Build a tool for editing recordings
+ - [x] Simplify implementing `getInstance` for every class
+ - [ ] Implement singleton pattern usage for non-serializable arguments as well
+
 ## Usage
 
 The API was designed to be as easy and general as possible, so these explanations
-will be short.
+will be short. To install, use the jar file available in Github's releases page
+for this project.
 
 ### Marking functions to be recorded
 

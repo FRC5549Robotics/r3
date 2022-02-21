@@ -9,6 +9,7 @@
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+    id 'maven-publish'
 }
 
 repositories {
@@ -31,4 +32,20 @@ dependencies {
 
     // Use JUnit test framework
     testImplementation 'junit:junit:4.13'
+}
+
+version = '1.3.0'
+group = 'r3'
+
+publishing {
+    publications {
+        library(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            url = uri("${buildDir}/publishing-repository")
+        }
+    }
 }
