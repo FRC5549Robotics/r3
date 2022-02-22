@@ -5,20 +5,19 @@ import java.lang.*;
 import java.io.*;
 
 public class Main {
-	static boolean recording = true;
 	int n;
-	static Main instance = null;
 
 	public Main() {
 		n = 0;
 	}
 
-	public static void main(String[] argv) throws IOException {
-		if (recording) {
-			Record.start();
-			Main m = new Main();
-			m.printAndSetNum(5);
-			m.incAndPrint();
+	public static void main(String[] argv) throws IOException, InterruptedException {
+		if (false) {
+			Record.start();   // Following lines are recorded:
+				Main m = new Main();
+				m.printAndSetNum(5);
+				Thread.sleep(2000);
+				m.incAndPrint();
 			Record.stop();
 		} else {
 			Replay.replay("recording.bin");
@@ -26,8 +25,8 @@ public class Main {
 	}
 
 	public void printAndSetNum(Integer i) {
-		Record.recordCall(new Signature("Main.printAndSetNum", Integer.class), i);
-		if (recording) {
+		Record.recordCall(this, i);
+		if (Record.isRecording()) {
 			System.out.printf("%d%n", i);
 		} else {
 			System.out.printf("Replay: %d%n", i);
@@ -36,9 +35,9 @@ public class Main {
 	}
 
 	public void incAndPrint() {
-		Record.recordCall(new Signature("Main.incAndPrint"));
+		Record.recordCall(this);
 		n++;
-		if (recording) {
+		if (!Replay.isReplaying()) {
 			System.out.printf("%d%n", n);
 		} else {
 			System.out.printf("Replay: %d%n", n);
@@ -46,8 +45,6 @@ public class Main {
 	}
 
 	public static Main getInstance() {
-		if (instance == null)
-			instance = new Main();
-		return instance;
-	}	
+		return new Main();
+	}
 }
