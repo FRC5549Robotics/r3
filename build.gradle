@@ -34,6 +34,12 @@ dependencies {
     testImplementation 'junit:junit:4.13'
 }
 
+sourceSets {
+    main {
+        java { srcDirs = ['src'] }
+    }
+}
+
 version = '1.3.0'
 group = 'r3'
 
