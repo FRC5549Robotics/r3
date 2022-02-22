@@ -1,7 +1,5 @@
 # R3
 
-**This project is in a usable alpha stage.**
-
 R3 is a general-purpose record and replay tool which is developed primarily
 for the FIRST Robots Competition (FRC). It stands for Robotic Record and Replay,
 but is not necessarily made just for robotics.
@@ -9,10 +7,6 @@ but is not necessarily made just for robotics.
 It works by logging function calls in a binary file, and then reading out of it
 at the correct times. This simple solution can ease several parts in the process
 of creating autonomous code for a robot.
-
-> This library is not production ready in any shape or form. Feel free to use it,
-> hack on it, play with it, or really anything, but, as maintainers, we cannot be
-> held responsible for breaking your code or anything of the sort.
 
 ## Roadmap
 
