@@ -122,6 +122,13 @@ public class Record {
 		Record.getInstance()._stop();
 	}
 
+	public static void toggle() {
+		if (Record.getInstance().isRecording())
+			Record.stop();
+		else
+			Record.start();
+	}
+
 	private static Record getInstance() {
 		if (instance == null)
 			instance = new Record();
