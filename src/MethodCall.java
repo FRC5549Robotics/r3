@@ -1,6 +1,9 @@
 package r3;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+
+import javax.lang.model.util.ElementScanner6;
 
 /**
  * Defines a MethodCall object to be used to serialize a method call; for internal use only.
@@ -34,7 +37,14 @@ public class MethodCall implements Serializable {
 	public MethodCall(long ftime, Signature fsig, Object... fargs) {
 		time = ftime;
 		sig = fsig;
-		args = fargs;
+		args = new Object[fargs.length];
+		for (int i = 0; i < fargs.length; i++) {
+			Object x = fargs[i];
+			if (Serializable.class.isAssignableFrom(x.getClass()))
+				args[i] = x;
+			else
+				args[i] = x.getClass();
+		}
 	}
 
 	/**
@@ -43,7 +53,20 @@ public class MethodCall implements Serializable {
 	 * This calls the method with the specified args.
 	 */
 	public void run() {
-		sig.invoke(args);
+		Object[] argsToRun = new Object[args.length];
+		for (int i = 0; i < args.length; i++) {
+			Object x = args[i];
+			if (Class.class.isAssignableFrom(x.getClass())) {
+				try {
+					argsToRun[i] = x.getClass().getMethod("getInstance").invoke(null);
+				} catch (InvocationTargetException e) {}
+				  catch (NoSuchMethodException e) {}
+				  catch (IllegalAccessException e) {}
+			} else {
+				argsToRun[i] = x;
+			}
+		}
+		sig.invoke(argsToRun);
 	}
 
 	/**
