@@ -123,7 +123,7 @@ public class Record {
 	}
 
 	public static void toggle() {
-		if (Record.getInstance().isRecording())
+		if (Record.isRecording())
 			Record.stop();
 		else
 			Record.start();
