@@ -46,7 +46,7 @@ public class Replay {
 				} catch (ClassNotFoundException e)    { System.out.println("Error: ClassNotFound"); }
 				  catch (InterruptedException e)      { System.out.println("Error: Interrupted"); }
 			}
-		} catch (EOFException e) {}
+		} catch (EOFException e) { in.close(); }
 		replaying = false;
 	}
 

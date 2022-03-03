@@ -59,9 +59,9 @@ public class MethodCall implements Serializable {
 			if (Class.class.isAssignableFrom(x.getClass())) {
 				try {
 					argsToRun[i] = x.getClass().getMethod("getInstance").invoke(null);
-				} catch (InvocationTargetException e) {}
-				  catch (NoSuchMethodException e) {}
-				  catch (IllegalAccessException e) {}
+				} catch (InvocationTargetException e) { System.out.println("Exception in getInstance"); }
+				  catch (NoSuchMethodException e) { System.out.println("getInstance does not exist"); }
+				  catch (IllegalAccessException e) { System.out.println("getInstance is private or protected"); }
 			} else {
 				argsToRun[i] = x;
 			}

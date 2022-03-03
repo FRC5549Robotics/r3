@@ -108,7 +108,7 @@ public class Record {
 	private void _stop() {
 		try {
 			out.flush();
-		} catch (IOException e) {}
+		} catch (IOException e) { System.out.println("IOException when finishing."); }
 		recording = false;
 	}
 
