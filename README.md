@@ -15,6 +15,7 @@ of creating autonomous code for a robot.
  - [ ] Build a tool for editing recordings
  - [x] Simplify implementing `getInstance` for every class
  - [x] Implement singleton pattern usage for non-serializable arguments as well
+ - [ ] **Actually work**
 
 ## Usage
 
